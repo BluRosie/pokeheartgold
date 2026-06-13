@@ -6,285 +6,27 @@
 
 	.text
 
-	thumb_func_start ov112_021E5900
-ov112_021E5900: ; 0x021E5900
-	push {r3, r4, r5, r6}
-	mov r5, #2
-	mov r6, #0
-	cmp r1, #0
-	bls _021E5924
-	mov r2, #1
-_021E590C:
-	add r3, r6, #0
-	ldrb r4, [r0]
-	add r0, r0, #1
-	tst r3, r2
-	beq _021E591A
-	add r5, r5, r4
-	b _021E591E
-_021E591A:
-	lsl r3, r4, #8
-	add r5, r5, r3
-_021E591E:
-	add r6, r6, #1
-	cmp r6, r1
-	blo _021E590C
-_021E5924:
-	lsl r0, r5, #0x10
-	lsr r1, r5, #0x10
-	lsr r0, r0, #0x10
-	add r1, r1, r0
-	lsr r0, r1, #0x10
-	add r0, r1, r0
-	lsl r0, r0, #0x10
-	lsr r0, r0, #0x10
-	pop {r3, r4, r5, r6}
-	bx lr
-	thumb_func_end ov112_021E5900
+	.public PokeWalkerIrLib_CalcCheckSum
+	.public PokeWalkerIrLib_Sub_021E5938
+	.public PokeWalkerIrLib_021FF9E0
+	.public PokeWalkerIrLib_Sub_021E594C
 
-	thumb_func_start ov112_021E5938
-ov112_021E5938: ; 0x021E5938
-	ldr r0, _021E5948 ; =_021FF9E0
-	mov r1, #1
-	str r1, [r0, #0x18]
-	ldr r1, [r0, #0x10]
-	add r1, r1, #1
-	str r1, [r0, #0x10]
-	bx lr
-	nop
-_021E5948: .word _021FF9E0
-	thumb_func_end ov112_021E5938
 
-	thumb_func_start ov112_021E594C
-ov112_021E594C: ; 0x021E594C
-	ldr r0, _021E5960 ; =_021FF9E0
-	mov r1, #0
-	strb r1, [r0]
-	str r1, [r0, #0x28]
-	str r1, [r0, #0x2c]
-	str r1, [r0, #0x18]
-	str r1, [r0, #0x24]
-	str r1, [r0, #8]
-	str r1, [r0, #0x10]
-	bx lr
-	.balign 4, 0
-_021E5960: .word _021FF9E0
-	thumb_func_end ov112_021E594C
-
-	thumb_func_start ov112_021E5964
-ov112_021E5964: ; 0x021E5964
-	push {r3, lr}
-	bl CARD_SpiWaitInit
-	mov r0, #0x32
-	bl CARD_SetSpiWriteWaitCycles
-	mov r0, #0x32
-	bl CARD_SetSpiReadWaitCycles
-	ldr r0, _021E599C ; =ov112_021FFA18
-	bl CARD_SpiWaitReadRange
-	bl ov112_021E594C
-	ldr r0, _021E59A0 ; =_021FF500
-	mov r1, #0xff
-	strb r1, [r0]
-	strb r1, [r0, #1]
-	bl OS_GetTick
-	ldr r1, _021E59A4 ; =_021FF9E0
-	str r0, [r1, #0x20]
-	str r0, [r1, #4]
-	mov r0, #0
-	str r0, [r1, #0xc]
-	str r0, [r1, #0x1c]
-	pop {r3, pc}
-	nop
-_021E599C: .word ov112_021FFA18
-_021E59A0: .word _021FF500
-_021E59A4: .word _021FF9E0
-	thumb_func_end ov112_021E5964
-
-	thumb_func_start ov112_021E59A8
-ov112_021E59A8: ; 0x021E59A8
-	ldr r0, _021E59B0 ; =_021FF9E0
-	ldr r0, [r0, #0x2c]
-	bx lr
-	nop
-_021E59B0: .word _021FF9E0
-	thumb_func_end ov112_021E59A8
-
-	thumb_func_start ov112_021E59B4
-ov112_021E59B4: ; 0x021E59B4
-	push {r3, r4, r5, lr}
-	ldr r4, _021E5A0C ; =ov112_021FFA18
-	add r5, r1, #0
-	strb r2, [r4]
-	strb r3, [r4, #1]
-	ldr r1, [sp, #0x10]
-	ldr r3, _021E5A10 ; =ov112_021FFA20
-	str r1, [r4, #4]
-	mov r1, #0
-	strb r1, [r4, #2]
-	strb r1, [r4, #3]
-	b _021E59D6
-_021E59CC:
-	ldrb r2, [r0]
-	add r0, r0, #1
-	add r1, r1, #1
-	strb r2, [r3]
-	add r3, r3, #1
-_021E59D6:
-	cmp r1, r5
-	blt _021E59CC
-	add r5, #8
-	lsl r0, r5, #0x18
-	lsr r5, r0, #0x18
-	ldr r0, _021E5A0C ; =ov112_021FFA18
-	add r1, r5, #0
-	bl ov112_021E5900
-	strb r0, [r4, #2]
-	asr r0, r0, #8
-	strb r0, [r4, #3]
-	mov r1, #0
-	ldr r3, _021E5A0C ; =ov112_021FFA18
-	mov r0, #0xaa
-	b _021E59FE
-_021E59F6:
-	ldrb r2, [r3, r1]
-	eor r2, r0
-	strb r2, [r3, r1]
-	add r1, r1, #1
-_021E59FE:
-	cmp r1, r5
-	blt _021E59F6
-	ldr r0, _021E5A0C ; =ov112_021FFA18
-	add r1, r5, #0
-	bl CARD_SpiWaitWriteRange
-	pop {r3, r4, r5, pc}
-	.balign 4, 0
-_021E5A0C: .word ov112_021FFA18
-_021E5A10: .word ov112_021FFA20
-	thumb_func_end ov112_021E59B4
-
-	thumb_func_start ov112_021E5A14
-ov112_021E5A14: ; 0x021E5A14
-	push {r3, r4, lr}
-	sub sp, #4
-	add r4, r0, #0
-	ldr r0, _021E5A54 ; =_021FF9E0
-	ldr r1, [r0, #0x2c]
-	cmp r1, #0
-	beq _021E5A3E
-	ldr r1, [r0, #8]
-	cmp r1, #0
-	bne _021E5A3E
-	cmp r4, #0
-	bne _021E5A3E
-	ldr r0, [r0, #4]
-	ldr r3, _021E5A58 ; =_021FF500
-	str r0, [sp]
-	ldrb r3, [r3]
-	mov r0, #0
-	add r1, r0, #0
-	mov r2, #0xf4
-	bl ov112_021E59B4
-_021E5A3E:
-	ldr r0, _021E5A54 ; =_021FF9E0
-	ldr r1, [r0, #0x14]
-	cmp r1, #0
-	beq _021E5A4A
-	add r0, r4, #0
-	blx r1
-_021E5A4A:
-	bl ov112_021E594C
-	add sp, #4
-	pop {r3, r4, pc}
-	nop
-_021E5A54: .word _021FF9E0
-_021E5A58: .word _021FF500
-	thumb_func_end ov112_021E5A14
-
-	thumb_func_start ov112_021E5A5C
-ov112_021E5A5C: ; 0x021E5A5C
-	ldr r3, _021E5A64 ; =ov112_021E5A14
-	mov r0, #0
-	bx r3
-	nop
-_021E5A64: .word ov112_021E5A14
-	thumb_func_end ov112_021E5A5C
-
-	thumb_func_start ov112_021E5A68
-ov112_021E5A68: ; 0x021E5A68
-	push {r3, r4, r5, lr}
-	ldr r4, _021E5A7C ; =_021FF9E0
-	ldr r5, [r4, #0x2c]
-	cmp r5, #0
-	beq _021E5A7A
-	ldr r4, [r4, #4]
-	str r4, [sp]
-	bl ov112_021E59B4
-_021E5A7A:
-	pop {r3, r4, r5, pc}
-	.balign 4, 0
-_021E5A7C: .word _021FF9E0
-	thumb_func_end ov112_021E5A68
-
-	thumb_func_start ov112_021E5A80
-ov112_021E5A80: ; 0x021E5A80
-	bx lr
-	.balign 4, 0
-	thumb_func_end ov112_021E5A80
-
-	thumb_func_start ov112_021E5A84
-ov112_021E5A84: ; 0x021E5A84
-	cmp r0, #1
-	bne _021E5AA4
-	ldr r0, _021E5AC8 ; =_021FF9E0
-	ldr r0, [r0, #0x2c]
-	cmp r0, #0
-	beq _021E5A94
-	mov r0, #1
-	bx lr
-_021E5A94:
-	ldr r0, _021E5ACC ; =ov112_021FFA18
-	ldrb r0, [r0]
-	cmp r0, #0xfc
-	beq _021E5AA0
-	mov r0, #1
-	bx lr
-_021E5AA0:
-	mov r0, #0
-	bx lr
-_021E5AA4:
-	cmp r0, #2
-	beq _021E5AAC
-	cmp r0, #3
-	bne _021E5AC4
-_021E5AAC:
-	mov r1, #0
-	b _021E5AB2
-_021E5AB0:
-	add r1, r1, #1
-_021E5AB2:
-	cmp r1, #4
-	blo _021E5AB0
-	mov r1, #0
-	b _021E5ABC
-_021E5ABA:
-	add r1, r1, #1
-_021E5ABC:
-	cmp r1, r0
-	blo _021E5ABA
-	mov r0, #1
-	bx lr
-_021E5AC4:
-	mov r0, #0
-	bx lr
-	.balign 4, 0
-_021E5AC8: .word _021FF9E0
-_021E5ACC: .word ov112_021FFA18
-	thumb_func_end ov112_021E5A84
+	.public PokeWalkerIrLib_021E5964_InitMaybe
+	.public PokeWalkerIrLib_021FF500
+	.public ov112_021E59A8
+	.public ov112_021E59B4
+	.public PokeWalkerIrLib_Buffer
+	.public ov112_021E5A14
+	.public ov112_021E5A5C
+	.public ov112_021E5A68
+	.public ov112_021E5A80_nullsub
+	.public ov112_021E5A84
 
 	thumb_func_start ov112_021E5AD0
 ov112_021E5AD0: ; 0x021E5AD0
 	push {r3, lr}
-	ldr r0, _021E5B20 ; =_021FF9E0
+	ldr r0, _021E5B20 ; =PokeWalkerIrLib_021FF9E0
 	ldr r1, [r0, #0x2c]
 	cmp r1, #0
 	bne _021E5AE4
@@ -295,7 +37,7 @@ ov112_021E5AD0: ; 0x021E5AD0
 	pop {r3, pc}
 _021E5AE4:
 	bl OS_GetTick
-	ldr r2, _021E5B20 ; =_021FF9E0
+	ldr r2, _021E5B20 ; =PokeWalkerIrLib_021FF9E0
 	ldr r3, [r2, #0x30]
 	ldr r2, [r2, #0x34]
 	sub r3, r0, r3
@@ -317,13 +59,13 @@ _021E5AE4:
 _021E5B10:
 	mov r0, #1
 	bl ov112_021E5A14
-	ldr r0, _021E5B20 ; =_021FF9E0
+	ldr r0, _021E5B20 ; =PokeWalkerIrLib_021FF9E0
 	mov r1, #0
 	str r1, [r0, #0x24]
 	mov r0, #1
 	pop {r3, pc}
 	.balign 4, 0
-_021E5B20: .word _021FF9E0
+_021E5B20: .word PokeWalkerIrLib_021FF9E0
 _021E5B24: .word 0x000082EA
 	thumb_func_end ov112_021E5AD0
 
@@ -331,7 +73,7 @@ _021E5B24: .word 0x000082EA
 ov112_021E5B28: ; 0x021E5B28
 	push {r4, r5, r6, lr}
 	add r5, r0, #0
-	ldr r6, _021E5B90 ; =ov112_021FFA18
+	ldr r6, _021E5B90 ; =PokeWalkerIrLib_Buffer
 	cmp r5, #1
 	bne _021E5B40
 	ldrb r0, [r6]
@@ -359,19 +101,19 @@ _021E5B48:
 	strb r0, [r6, #3]
 	add r0, r6, #0
 	add r1, r5, #0
-	bl ov112_021E5900
+	bl PokeWalkerIrLib_CalcCheckSum
 	strb r4, [r6, #2]
 	asr r1, r4, #8
 	strb r1, [r6, #3]
 	cmp r4, r0
 	bne _021E5B76
-	ldr r0, _021E5B94 ; =_021FF9E0
+	ldr r0, _021E5B94 ; =PokeWalkerIrLib_021FF9E0
 	mov r1, #0
 	strb r1, [r0]
 	mov r0, #1
 	pop {r4, r5, r6, pc}
 _021E5B76:
-	ldr r0, _021E5B94 ; =_021FF9E0
+	ldr r0, _021E5B94 ; =PokeWalkerIrLib_021FF9E0
 	ldr r0, [r0, #0x2c]
 	cmp r0, #0
 	beq _021E5B8C
@@ -382,19 +124,19 @@ _021E5B82:
 _021E5B84:
 	cmp r0, r5
 	blo _021E5B82
-	bl ov112_021E5938
+	bl PokeWalkerIrLib_Sub_021E5938
 _021E5B8C:
 	mov r0, #0
 	pop {r4, r5, r6, pc}
 	.balign 4, 0
-_021E5B90: .word ov112_021FFA18
-_021E5B94: .word _021FF9E0
+_021E5B90: .word PokeWalkerIrLib_Buffer
+_021E5B94: .word PokeWalkerIrLib_021FF9E0
 	thumb_func_end ov112_021E5B28
 
 	thumb_func_start ov112_021E5B98
 ov112_021E5B98: ; 0x021E5B98
 	push {r3, r4, r5, lr}
-	ldr r0, _021E5D28 ; =ov112_021FFA18
+	ldr r0, _021E5D28 ; =PokeWalkerIrLib_Buffer
 	bl CARD_SpiWaitReadRange
 	add r4, r0, #0
 	bl ov112_021E5A84
@@ -421,10 +163,10 @@ _021E5BC0:
 	pop {r3, r4, r5, pc}
 _021E5BCE:
 	bl OS_GetTick
-	ldr r2, _021E5D2C ; =_021FF9E0
+	ldr r2, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
 	str r0, [r2, #0x30]
 	str r1, [r2, #0x34]
-	ldr r1, _021E5D28 ; =ov112_021FFA18
+	ldr r1, _021E5D28 ; =PokeWalkerIrLib_Buffer
 	ldrb r0, [r1]
 	cmp r0, #0xf0
 	bhs _021E5BF6
@@ -462,7 +204,7 @@ _021E5C0C: ; jump table
 	.short _021E5D04 - _021E5C0C - 2 ; case 5
 	.short _021E5C1A - _021E5C0C - 2 ; case 6
 _021E5C1A:
-	ldr r1, _021E5D2C ; =_021FF9E0
+	ldr r1, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
 	ldr r0, [r1, #0x28]
 	cmp r0, #4
 	bhi _021E5C4E
@@ -482,7 +224,7 @@ _021E5C38:
 	mov r0, #2
 	str r0, [r1, #0x28]
 	ldr r0, [r1, #0x20]
-	ldr r3, _021E5D30 ; =_021FF500
+	ldr r3, _021E5D30 ; =PokeWalkerIrLib_021FF500
 	str r0, [sp]
 	mov r0, #0
 	ldrb r3, [r3]
@@ -490,7 +232,7 @@ _021E5C38:
 	mov r2, #0xfa
 	bl ov112_021E59B4
 _021E5C4E:
-	ldr r0, _021E5D2C ; =_021FF9E0
+	ldr r0, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
 	ldr r1, [r0, #0x24]
 	cmp r1, #0
 	bne _021E5D24
@@ -506,8 +248,8 @@ _021E5C4E:
 	cmp r0, #0
 	beq _021E5D24
 _021E5C6C:
-	ldr r0, _021E5D2C ; =_021FF9E0
-	ldr r3, _021E5D30 ; =_021FF500
+	ldr r0, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
+	ldr r3, _021E5D30 ; =PokeWalkerIrLib_021FF500
 	ldr r0, [r0, #0x20]
 	mov r2, #0xfa
 	str r0, [sp]
@@ -515,16 +257,16 @@ _021E5C6C:
 	mov r0, #0
 	add r1, r0, #0
 	bl ov112_021E59B4
-	ldr r0, _021E5D2C ; =_021FF9E0
+	ldr r0, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
 	ldr r0, [r0, #0x2c]
 	cmp r0, #0
 	beq _021E5C8C
-	bl ov112_021E5938
+	bl PokeWalkerIrLib_Sub_021E5938
 _021E5C8C:
-	bl ov112_021E5A80
+	bl ov112_021E5A80_nullsub
 	b _021E5D24
 _021E5C92:
-	ldr r0, _021E5D2C ; =_021FF9E0
+	ldr r0, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
 	ldr r2, [r0, #0x28]
 	cmp r2, #1
 	bne _021E5D24
@@ -533,7 +275,7 @@ _021E5C92:
 	mov r2, #1
 	str r2, [r0, #8]
 	ldrb r2, [r1, #1]
-	ldr r3, _021E5D30 ; =_021FF500
+	ldr r3, _021E5D30 ; =PokeWalkerIrLib_021FF500
 	strb r2, [r3, #1]
 	cmp r2, #1
 	bne _021E5D24
@@ -547,7 +289,7 @@ _021E5C92:
 	add r1, r0, #0
 	mov r2, #0xf8
 	bl ov112_021E59B4
-	ldr r0, _021E5D2C ; =_021FF9E0
+	ldr r0, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
 	mov r1, #1
 	str r1, [r0, #0x2c]
 	mov r1, #0
@@ -555,14 +297,14 @@ _021E5C92:
 	str r1, [r0, #0x24]
 	b _021E5D24
 _021E5CD0:
-	ldr r3, _021E5D2C ; =_021FF9E0
+	ldr r3, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
 	ldr r0, [r3, #0x28]
 	cmp r0, #2
 	bne _021E5D24
 	mov r0, #4
 	str r0, [r3, #0x28]
 	ldrb r0, [r1, #1]
-	ldr r2, _021E5D30 ; =_021FF500
+	ldr r2, _021E5D30 ; =PokeWalkerIrLib_021FF500
 	strb r0, [r2, #1]
 	ldr r2, [r1, #4]
 	ldr r1, [r3, #0x20]
@@ -579,22 +321,22 @@ _021E5CD0:
 	blx r2
 	b _021E5D24
 _021E5CFE:
-	bl ov112_021E5938
+	bl PokeWalkerIrLib_Sub_021E5938
 	b _021E5D24
 _021E5D04:
-	ldr r5, _021E5D2C ; =_021FF9E0
+	ldr r5, _021E5D2C ; =PokeWalkerIrLib_021FF9E0
 	ldr r0, [r5, #0x18]
 	cmp r0, #1
 	beq _021E5D24
 	ldr r0, [r5, #0x2c]
 	cmp r0, #0
 	beq _021E5D24
-	ldr r3, _021E5D28 ; =ov112_021FFA18
+	ldr r3, _021E5D28 ; =PokeWalkerIrLib_Buffer
 	sub r4, #8
 	ldrb r2, [r3]
 	lsl r1, r4, #0x18
 	ldrb r3, [r3, #1]
-	ldr r0, _021E5D34 ; =ov112_021FFA20
+	ldr r0, _021E5D34 ; =PokeWalkerIrLib_Buffer+8
 	ldr r4, [r5, #0x1c]
 	lsr r1, r1, #0x18
 	blx r4
@@ -602,46 +344,46 @@ _021E5D24:
 	mov r0, #0
 	pop {r3, r4, r5, pc}
 	.balign 4, 0
-_021E5D28: .word ov112_021FFA18
-_021E5D2C: .word _021FF9E0
-_021E5D30: .word _021FF500
-_021E5D34: .word ov112_021FFA20
+_021E5D28: .word PokeWalkerIrLib_Buffer
+_021E5D2C: .word PokeWalkerIrLib_021FF9E0
+_021E5D30: .word PokeWalkerIrLib_021FF500
+_021E5D34: .word PokeWalkerIrLib_Buffer+8
 	thumb_func_end ov112_021E5B98
 
 	thumb_func_start ov112_021E5D38
 ov112_021E5D38: ; 0x021E5D38
-	ldr r1, _021E5D40 ; =_021FF9E0
+	ldr r1, _021E5D40 ; =PokeWalkerIrLib_021FF9E0
 	str r0, [r1, #0xc]
 	bx lr
 	nop
-_021E5D40: .word _021FF9E0
+_021E5D40: .word PokeWalkerIrLib_021FF9E0
 	thumb_func_end ov112_021E5D38
 
 	thumb_func_start ov112_021E5D44
 ov112_021E5D44: ; 0x021E5D44
-	ldr r1, _021E5D4C ; =_021FF9E0
+	ldr r1, _021E5D4C ; =PokeWalkerIrLib_021FF9E0
 	str r0, [r1, #0x1c]
 	bx lr
 	nop
-_021E5D4C: .word _021FF9E0
+_021E5D4C: .word PokeWalkerIrLib_021FF9E0
 	thumb_func_end ov112_021E5D44
 
 	thumb_func_start ov112_021E5D50
 ov112_021E5D50: ; 0x021E5D50
-	ldr r1, _021E5D58 ; =_021FF9E0
+	ldr r1, _021E5D58 ; =PokeWalkerIrLib_021FF9E0
 	str r0, [r1, #0x14]
 	bx lr
 	nop
-_021E5D58: .word _021FF9E0
+_021E5D58: .word PokeWalkerIrLib_021FF9E0
 	thumb_func_end ov112_021E5D50
 
 	thumb_func_start ov112_021E5D5C
 ov112_021E5D5C: ; 0x021E5D5C
-	ldr r1, _021E5D64 ; =_021FF500
+	ldr r1, _021E5D64 ; =PokeWalkerIrLib_021FF500
 	strb r0, [r1]
 	bx lr
 	nop
-_021E5D64: .word _021FF500
+_021E5D64: .word PokeWalkerIrLib_021FF500
 	thumb_func_end ov112_021E5D5C
 
 	thumb_func_start ov112_021E5D68
@@ -3545,7 +3287,7 @@ ov112_021E73C8: ; 0x021E73C8
 	str r1, [r0, #0x44]
 	add r6, r2, #0
 	str r1, [r0, #0x48]
-	bl ov112_021E5964
+	bl PokeWalkerIrLib_021E5964_InitMaybe
 	mov r0, #1
 	bl ov112_021E5D5C
 	ldr r0, _021E7444 ; =ov112_021E6A6C
@@ -31718,8 +31460,8 @@ ov112_021FF4D4: ; 0x021FF4D4
 
 	.data
 
-_021FF500:
-	.byte 0xFF, 0xFF, 0x00, 0x00
+//PokeWalkerIrLib_021FF500:
+//	.byte 0xFF, 0xFF, 0x00, 0x00
 
 ov112_021FF504: ; 0x021FF504
 	.word ov112_021F3814
@@ -32071,14 +31813,11 @@ ov112_021FF9B8: ; 0x021FF9B8
 
 	.bss
 
-_021FF9E0:
-	.space 0x38
-
-ov112_021FFA18: ; 0x021FFA18
-	.space 0x8
-
-ov112_021FFA20: ; 0x021FFA20
-	.space 0x84
+//PokeWalkerIrLib_Buffer: ; 0x021FFA18
+//	.space 0x8
+//
+//PokeWalkerIrLib_Buffer+8: ; 0x021FFA20 // full buffer in the rest of this space
+//	.space 0x84
 
 ov112_021FFAA4: ; 0x021FFAA4
 	.space 0x1C
